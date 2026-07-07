@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Spicera</title>
+<meta name="description" content="Review your Spicera cart before checkout.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F4A12E'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23C03A22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Playfair+Display:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="cart">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Spicera home">
+      <span class="brand-script">Spicera</span>
+      <svg class="brand-swoosh" viewBox="0 0 96 8" fill="none"><path d="M2 5C28 1 66 1 94 4" stroke="#77803F" stroke-width="3" stroke-linecap="round"/></svg>
+      <span class="brand-tag">From India's Roots to Your Home</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <a class="cart-link" href="cart.html" aria-label="Cart">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <span class="cart-count is-empty">0</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <span class="dot"></span>
+  <div class="container">
+    <div class="eyebrow">Almost there</div>
+    <h1>Your Cart</h1>
+  </div>
+</section>
+
+<section>
+  <div class="container cart-wrap">
+    <div class="cart-lines" id="cart-lines"></div>
+    <aside class="summary-card" id="cart-summary">
+      <h3>Order Summary</h3>
+      <div class="free-ship"></div>
+      <div id="sum-rows"></div>
+      <a class="btn btn-terra btn-block" href="checkout.html" style="margin-top:1.2rem">Proceed to Checkout</a>
+      <a class="btn btn-ghost btn-block" href="shop.html" style="margin-top:.6rem">Continue Shopping</a>
+      <div class="trust-row">
+        <span class="trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>100% Authentic Origin</span>
+        <span class="trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure Checkout</span>
+        <span class="trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 7.5 21l4.5-2.5L16.5 21 15 13.5"/></svg>Quality Guaranteed</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-script">Spicera</span>
+        <p class="footer-note">From India's Roots to Your Home. GI-certified spices, nuts, seeds, dry fruits, oils, honey &amp; ghee — sourced at origin, shipped to your door.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html?cat=spices">Spices</a></li>
+          <li><a href="shop.html?cat=nuts">Nuts</a></li>
+          <li><a href="shop.html?cat=seeds">Seeds</a></li>
+          <li><a href="shop.html?cat=dryfruits">Dry Fruits</a></li>
+          <li><a href="shop.html?cat=ghee">Ghee &amp; Honey</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="shop.html">All Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Join Our Spice Club</h4>
+        <p class="footer-note">Recipes, origin stories and member-only offers.</p>
+        <form class="newsletter" onsubmit="event.preventDefault(); SPICERA.toast('Welcome to the Spice Club!'); this.reset();">
+          <input type="email" placeholder="Your email address" required>
+          <button class="btn" type="submit">Join</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Spicera · From India's Roots to Your Home.</span>
+      <span>100% Authentic Origin · Secure Checkout · Quality Guaranteed</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/products.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
