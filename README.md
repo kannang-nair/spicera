@@ -19,6 +19,7 @@ Dry Fruits · Seeds · Oil · Honey · Ghee · Herbals).
 | `cart.html`     | Cart with quantity steppers, free-shipping progress bar, order summary |
 | `checkout.html` | Checkout per the Spicera plan — express UPI/GPay/Apple Pay, shipping form, payment accordion (Card / UPI & Net Banking / COD), order summary with origin tags & trust badges |
 | `about.html`    | About Us — brand story, why GI origin matters, values |
+| `quotation.html` | **Quotation builder** (internal) — pick products from the catalog, set pack/qty/discount/GST, auto CGST+SGST vs IGST by place of supply, amount in words, Print / Save as PDF, copy for WhatsApp, save draft |
 
 The cart is stored in `localStorage`, so it persists across pages and visits.
 "Place Order" validates the shipping form and shows an order confirmation

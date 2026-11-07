@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quotation — Spicera</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F4A12E'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23C03A22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#F6F1E6; --paper:#FFFFFF; --ink:#20242E; --brown:#4A3728; --olive:#77803F;
+    --terra:#E1502A; --terra-d:#C23F1D; --amber:#F4A12E; --yellow:#FBC02D;
+    --muted:#6E675B; --line:#E5DCCB; --soft:#FBF8F1;
+    --serif:"Playfair Display",Georgia,serif; --sans:"Poppins","Segoe UI",Arial,sans-serif;
+    --script:"Kaushan Script","Brush Script MT",cursive;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink);background:var(--cream)}
+  .toolbar{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .toolbar h1{font:600 15px var(--sans);margin:0 auto 0 0}
+  .btn{border:0;border-radius:999px;padding:8px 16px;font:600 13px var(--sans);cursor:pointer;background:#fff;color:var(--ink)}
+  .btn.primary{background:var(--yellow)}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+  .btn.small{padding:4px 10px;font-size:12px}
+  .btn.add{background:var(--olive);color:#fff}
+  .sheet{max-width:960px;margin:24px auto;background:var(--paper);border-radius:14px;box-shadow:0 18px 40px -18px rgba(32,36,46,.35);padding:36px 40px;position:relative;overflow:hidden}
+  .sheet::before{content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;border-radius:50%;background:var(--amber);opacity:.18}
+  .head{display:grid;grid-template-columns:1fr auto;gap:24px;border-bottom:3px solid var(--terra);padding-bottom:18px;position:relative}
+  .brand{font:400 40px/1 var(--script);color:var(--terra-d)}
+  .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);margin-top:4px}
+  .seller{margin-top:10px;color:var(--muted);font-size:12.5px}
+  .title{text-align:right}
+  .title h2{font:800 30px var(--serif);margin:0;color:var(--ink);letter-spacing:.04em}
+  .meta{display:grid;grid-template-columns:auto auto;gap:2px 12px;margin-top:8px;justify-content:end;font-size:12.5px}
+  .meta label{color:var(--muted);text-align:right}
+  .parties{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:22px 0}
+  .box h3{font:600 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--olive);margin:0 0 6px}
+  input,select,textarea{font:inherit;color:inherit;border:1px solid transparent;border-radius:6px;background:transparent;padding:3px 6px;width:100%}
+  input:hover,select:hover,textarea:hover{border-color:var(--line)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);background:var(--soft)}
+  .box input,.box textarea{margin-bottom:2px}
+  .box .name{font-weight:600;font-size:15px}
+  textarea{resize:vertical;overflow:hidden}
+  input[type=number]::-webkit-inner-spin-button{opacity:.4}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{background:var(--ink);color:#fff;font-weight:500;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:8px 6px;text-align:left}
+  thead th.num,td.num{text-align:right}
+  tbody td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:middle}
+  tbody tr:nth-child(even){background:var(--soft)}
+  td input.num{text-align:right}
+  td .sub{font-size:11px;color:var(--muted);padding-left:6px;text-overflow:ellipsis}
+  .col-item{min-width:220px}
+  .col-sn{width:30px}.col-size{width:96px}.col-qty{width:64px}.col-rate{width:88px}.col-disc{width:62px}.col-gst{width:62px}.col-amt{width:104px}.col-x{width:28px}
+  .rm{background:none;border:0;color:var(--terra-d);font-size:18px;cursor:pointer;line-height:1}
+  .below{display:grid;grid-template-columns:1fr 320px;gap:28px;margin-top:18px}
+  .totals{width:100%}
+  .totals td{padding:5px 6px;border:0}
+  .totals td:last-child{text-align:right;white-space:nowrap}
+  .totals input{width:90px;text-align:right}
+  .totals .grand td{border-top:2px solid var(--ink);font:700 17px var(--serif);padding-top:8px}
+  .words{margin-top:8px;font-size:12.5px;color:var(--brown);font-style:italic}
+  .terms h3{font:600 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--olive);margin:0 0 6px}
+  .terms textarea,#termsPrint{font-size:12.5px;color:var(--muted);min-height:150px}
+  #termsPrint{white-space:pre-wrap;min-height:0;padding:0 2px}
+  .print-only{display:none}
+  .sign{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px;gap:20px;flex-wrap:wrap}
+  .sign .thanks{font:400 22px var(--script);color:var(--terra-d)}
+  .sign .line{border-top:1px solid var(--ink);padding-top:4px;min-width:200px;text-align:center;font-size:12px;color:var(--muted)}
+  .add-row{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .note{font-size:11.5px;color:var(--muted)}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none}
+  .toast.show{opacity:1}
+  @media (max-width:720px){
+    .sheet{padding:22px 16px;margin:12px 8px;border-radius:10px}
+    .head{grid-template-columns:1fr}
+    .parties,.below{grid-template-columns:1fr}
+    .title{text-align:left}.meta{justify-content:start}.meta label{text-align:left}
+    .table-wrap{overflow-x:auto}
+    table{min-width:720px}
+  }
+  @media print{
+    @page{size:A4;margin:12mm}
+    body{background:#fff}
+    .toolbar,.no-print,.rm,.add-row{display:none!important}
+    ::placeholder{color:transparent!important}
+    .print-only{display:block!important}
+    input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+    input[type=number]{-moz-appearance:textfield}
+    .sheet{box-shadow:none;margin:0;max-width:none;padding:0;border-radius:0}
+    .sheet::before{display:none}
+    input,select,textarea{border:0!important;background:transparent!important;padding:0 2px;appearance:none;-webkit-appearance:none}
+    textarea{resize:none;overflow:hidden}
+    thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    tbody tr:nth-child(even){-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>Spicera · Quotation builder</h1>
+  <button class="btn ghost" id="newBtn">New quote</button>
+  <button class="btn ghost" id="copyBtn">Copy for WhatsApp</button>
+  <button class="btn" id="saveBtn">Save draft</button>
+  <button class="btn primary" id="printBtn">Print / Save PDF</button>
+</div>
+
+<main class="sheet" id="sheet">
+  <div class="head">
+    <div>
+      <div class="brand">Spicera</div>
+      <div class="tag">From India's Roots to Your Home</div>
+      <div class="seller">
+        <input data-f="sellerAddr" value="12 Spice Garden Road, Kochi, Kerala 682016">
+        <input data-f="sellerContact" value="+91 98765 43210 · hello@spicera.in">
+        <input data-f="sellerGstin" value="GSTIN: 32XXXXXXXXXX1Z5">
+      </div>
+    </div>
+    <div class="title">
+      <h2>QUOTATION</h2>
+      <div class="meta">
+        <label>Quote No.</label><input data-f="qno" style="width:150px">
+        <label>Date</label><input type="date" data-f="qdate" style="width:150px">
+        <label>Valid until</label><input type="date" data-f="qvalid" style="width:150px">
+      </div>
+    </div>
+  </div>
+
+  <div class="parties">
+    <div class="box">
+      <h3>Quotation for</h3>
+      <input class="name" data-f="custName" placeholder="Customer / business name">
+      <input data-f="custContact" placeholder="Contact person">
+      <textarea data-f="custAddr" rows="2" placeholder="Billing address"></textarea>
+      <input data-f="custPhone" placeholder="Phone / email">
+      <input data-f="custGstin" placeholder="Customer GSTIN (optional)">
+    </div>
+    <div class="box">
+      <h3>Supply details</h3>
+      <label class="note">Place of supply</label>
+      <select data-f="supplyState" id="supplyState"></select>
+      <div class="no-print">
+        <label class="note">Seller state (for CGST/SGST vs IGST)</label>
+        <select data-f="sellerState" id="sellerState"></select>
+      </div>
+      <label class="note">Subject / reference</label>
+      <input data-f="subject" placeholder="e.g. Bulk spices for restaurant — monthly supply">
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-sn">#</th>
+          <th class="col-item">Item</th>
+          <th class="col-size">Pack</th>
+          <th class="col-qty num">Qty</th>
+          <th class="col-rate num">Rate ₹</th>
+          <th class="col-disc num">Disc %</th>
+          <th class="col-gst num">GST %</th>
+          <th class="col-amt num">Amount ₹</th>
+          <th class="col-x"></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="add-row">
+    <select id="pickProduct" style="max-width:320px;border-color:var(--line)"></select>
+    <button class="btn small add" id="addBtn">+ Add product</button>
+    <button class="btn small" id="addCustom" style="border:1px solid var(--line)">+ Custom line</button>
+  </div>
+
+  <div class="below">
+    <div class="terms">
+      <h3>Terms &amp; conditions</h3>
+      <textarea data-f="terms" id="terms" class="no-print"></textarea>
+      <div id="termsPrint" class="print-only"></div>
+    </div>
+    <div>
+      <table class="totals">
+        <tr><td>Taxable value</td><td id="tTaxable">₹0.00</td></tr>
+        <tbody id="taxRows"></tbody>
+        <tr><td>Shipping / freight</td><td>₹ <input type="number" min="0" step="1" data-f="shipping" value="0"></td></tr>
+        <tr><td>Round off</td><td id="tRound">₹0.00</td></tr>
+        <tr class="grand"><td>Grand total</td><td id="tGrand">₹0.00</td></tr>
+      </table>
+      <div class="words" id="tWords"></div>
+    </div>
+  </div>
+
+  <div class="sign">
+    <div class="thanks">Thank you for choosing Spicera!</div>
+    <div class="line">For Spicera — Authorised signatory</div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/products.js"></script>
+<script>
+(function () {
+  var S = window.SPICERA;
+  var KEY = "spicera_quote_draft";
+  var STATES = ["Andaman & Nicobar","Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chandigarh","Chhattisgarh",
+    "Dadra & Nagar Haveli and Daman & Diu","Delhi","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu & Kashmir",
+    "Jharkhand","Karnataka","Kerala","Ladakh","Lakshadweep","Madhya Pradesh","Maharashtra","Manipur","Meghalaya",
+    "Mizoram","Nagaland","Odisha","Puducherry","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
+    "Uttar Pradesh","Uttarakhand","West Bengal","Export (outside India)"];
+  /* Default GST rates — edit per line if your HSN classification differs. */
+  var GST_DEFAULT = { spices:5, seeds:5, nuts:5, dryfruits:5, oil:5, honey:5, ghee:5, herbal:5 };
+  var DEFAULT_TERMS = [
+    "1. Prices are in INR and valid until the date shown above.",
+    "2. GST is charged as shown; rates follow the applicable HSN classification.",
+    "3. Payment: 50% advance with order, balance before dispatch (UPI / bank transfer).",
+    "4. Dispatch within 3–5 working days of confirmed payment.",
+    "5. Products are GI / origin-sourced; minor natural variation in colour and size is normal.",
+    "6. Freight extra unless stated. Goods once dispatched are not returnable except for transit damage reported within 48 hours."
+  ].join("\n");
+
+  var rows = [];
+  var $ = function (id) { return document.getElementById(id); };
+  var fields = function () { return document.querySelectorAll("[data-f]"); };
+
+  function iso(d) { return d.toISOString().slice(0, 10); }
+  function fmt(n) { return "₹" + Number(n).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function num(v) { var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]; }); }
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(function () { t.classList.remove("show"); }, 1800); }
+
+  function newQuoteNo() {
+    var d = new Date();
+    return "SPQ-" + d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0") +
+      "-" + String(Math.floor(Math.random() * 900) + 100);
+  }
+
+  /* ---------- Amount in words (Indian system) ---------- */
+  var ONES = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen",
+    "Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+  var TENS = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+  function two(n) { return n < 20 ? ONES[n] : TENS[Math.floor(n / 10)] + (n % 10 ? " " + ONES[n % 10] : ""); }
+  function three(n) { var h = Math.floor(n / 100), r = n % 100; return (h ? ONES[h] + " Hundred" + (r ? " " : "") : "") + (r ? two(r) : ""); }
+  function words(n) {
+    n = Math.round(n);
+    if (n === 0) return "Zero";
+    var out = [], cr = Math.floor(n / 1e7); n %= 1e7;
+    var lk = Math.floor(n / 1e5); n %= 1e5;
+    var th = Math.floor(n / 1e3); n %= 1e3;
+    if (cr) out.push(words(cr) + " Crore");
+    if (lk) out.push(two(lk) + " Lakh");
+    if (th) out.push(two(th) + " Thousand");
+    if (n) out.push(three(n));
+    return out.join(" ");
+  }
+
+  /* ---------- Selects ---------- */
+  function fillStates(sel, def) {
+    sel.innerHTML = STATES.map(function (s) { return "<option" + (s === def ? " selected" : "") + ">" + s + "</option>"; }).join("");
+  }
+  function fillPicker() {
+    $("pickProduct").innerHTML = S.CATEGORIES.map(function (c) {
+      var items = S.PRODUCTS.filter(function (p) { return p.cat === c.key; });
+      if (!items.length) return "";
+      return '<optgroup label="' + c.label + '">' + items.map(function (p) {
+        return '<option value="' + p.slug + '">' + esc(p.name) + " — " + esc(p.origin) + "</option>";
+      }).join("") + "</optgroup>";
+    }).join("");
+  }
+
+  /* ---------- Rows ---------- */
+  function addProduct(slug) {
+    var p = S.bySlug(slug); if (!p) return;
+    var size = S.baseSize(p);
+    rows.push({ slug: slug, name: p.name, sub: p.origin + (p.gi ? " · GI-certified" : ""), size: size,
+      qty: 1, rate: S.priceFor(p, size), disc: 0, gst: GST_DEFAULT[p.cat] || 5 });
+    render();
+  }
+  function addCustom() {
+    rows.push({ slug: "", name: "", sub: "", size: "", qty: 1, rate: 0, disc: 0, gst: 5 });
+    render();
+  }
+  function lineTaxable(r) { return num(r.qty) * num(r.rate) * (1 - num(r.disc) / 100); }
+
+  function render() {
+    $("rows").innerHTML = rows.map(function (r, i) {
+      var p = r.slug ? S.bySlug(r.slug) : null;
+      var sizeCell = p
+        ? '<select data-i="' + i + '" data-k="size">' + S.sizesFor(p).map(function (s) {
+            return "<option" + (s[0] === r.size ? " selected" : "") + ">" + s[0] + "</option>"; }).join("") + "</select>"
+        : '<input data-i="' + i + '" data-k="size" value="' + esc(r.size) + '" placeholder="unit">';
+      return "<tr>" +
+        "<td>" + (i + 1) + "</td>" +
+        '<td><input data-i="' + i + '" data-k="name" value="' + esc(r.name) + '" placeholder="Item description">' +
+          '<input class="sub" data-i="' + i + '" data-k="sub" value="' + esc(r.sub) + '" placeholder="origin / notes"></td>' +
+        "<td>" + sizeCell + "</td>" +
+        '<td><input class="num" type="number" min="0" step="1" data-i="' + i + '" data-k="qty" value="' + r.qty + '"></td>' +
+        '<td><input class="num" type="number" min="0" step="0.01" data-i="' + i + '" data-k="rate" value="' + r.rate + '"></td>' +
+        '<td><input class="num" type="number" min="0" max="100" step="0.5" data-i="' + i + '" data-k="disc" value="' + r.disc + '"></td>' +
+        '<td><select data-i="' + i + '" data-k="gst">' + [0, 5, 12, 18].map(function (g) {
+            return '<option value="' + g + '"' + (num(r.gst) === g ? " selected" : "") + ">" + g + "%</option>"; }).join("") + "</select></td>" +
+        '<td class="num" data-amt="' + i + '">' + fmt(lineTaxable(r)).slice(1) + "</td>" +
+        '<td><button class="rm" data-rm="' + i + '" title="Remove">×</button></td>' +
+        "</tr>";
+    }).join("") || '<tr><td colspan="9" class="note" style="text-align:center;padding:18px">No items yet — pick a product below and click “Add product”.</td></tr>';
+    totals();
+  }
+
+  function totals() {
+    var intra = $("supplyState").value === $("sellerState").value;
+    var taxable = 0, byRate = {};
+    rows.forEach(function (r, i) {
+      var t = lineTaxable(r); taxable += t;
+      var g = num(r.gst); byRate[g] = (byRate[g] || 0) + t;
+      var cell = document.querySelector('[data-amt="' + i + '"]'); if (cell) cell.textContent = fmt(t).slice(1);
+    });
+    var taxHTML = "", taxTotal = 0;
+    Object.keys(byRate).map(Number).sort(function (a, b) { return a - b; }).forEach(function (g) {
+      if (!g) return;
+      var tax = byRate[g] * g / 100; taxTotal += tax;
+      if (intra) {
+        taxHTML += "<tr><td>CGST @ " + g / 2 + "%</td><td>" + fmt(tax / 2) + "</td></tr>" +
+                   "<tr><td>SGST @ " + g / 2 + "%</td><td>" + fmt(tax / 2) + "</td></tr>";
+      } else {
+        taxHTML += "<tr><td>IGST @ " + g + "%</td><td>" + fmt(tax) + "</td></tr>";
+      }
+    });
+    var ship = num(document.querySelector('[data-f="shipping"]').value);
+    var raw = taxable + taxTotal + ship, grand = Math.round(raw);
+    $("tTaxable").textContent = fmt(taxable);
+    $("taxRows").innerHTML = taxHTML;
+    $("tRound").textContent = (grand - raw >= 0 ? "" : "−") + fmt(Math.abs(grand - raw));
+    $("tGrand").textContent = fmt(grand);
+    $("tWords").textContent = "Rupees " + words(grand) + " Only";
+    return { taxable: taxable, tax: taxTotal, ship: ship, grand: grand };
+  }
+
+  $("rows").addEventListener("input", onRowEdit);
+  $("rows").addEventListener("change", onRowEdit);
+  function onRowEdit(e) {
+    var el = e.target, i = el.dataset.i, k = el.dataset.k; if (i == null) return;
+    var r = rows[i]; r[k] = el.value;
+    if (k === "size" && r.slug) {
+      r.rate = S.priceFor(S.bySlug(r.slug), r.size);
+      var rateEl = document.querySelector('[data-i="' + i + '"][data-k="rate"]'); if (rateEl) rateEl.value = r.rate;
+    }
+    totals();
+  }
+  $("rows").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-rm]"); if (!b) return;
+    rows.splice(+b.dataset.rm, 1); render();
+  });
+  function grow() {
+    $("termsPrint").textContent = $("terms").value; document.querySelectorAll("textarea").forEach(function (t) { t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }); }
+  document.addEventListener("input", function (e) { if (e.target.dataset.f) totals(); if (e.target.tagName === "TEXTAREA") grow(); });
+  window.addEventListener("beforeprint", grow);
+  document.addEventListener("change", function (e) { if (e.target.dataset.f) totals(); });
+
+  $("addBtn").onclick = function () { addProduct($("pickProduct").value); };
+  $("addCustom").onclick = addCustom;
+
+  /* ---------- Save / load ---------- */
+  function snapshot() {
+    var f = {}; fields().forEach(function (el) { f[el.dataset.f] = el.value; });
+    return { fields: f, rows: rows };
+  }
+  function restore(d) {
+    fields().forEach(function (el) { if (d.fields && d.fields[el.dataset.f] != null) el.value = d.fields[el.dataset.f]; });
+    rows = d.rows || []; render();
+  }
+  function fresh() {
+    var today = new Date(), valid = new Date(); valid.setDate(valid.getDate() + 15);
+    fields().forEach(function (el) { if (/^cust|subject/.test(el.dataset.f)) el.value = ""; });
+    document.querySelector('[data-f="qno"]').value = newQuoteNo();
+    document.querySelector('[data-f="qdate"]').value = iso(today);
+    document.querySelector('[data-f="qvalid"]').value = iso(valid);
+    document.querySelector('[data-f="shipping"]').value = 0;
+    $("terms").value = DEFAULT_TERMS;
+    $("supplyState").value = "Kerala";
+    rows = []; render(); if (typeof grow === "function") grow();
+  }
+  $("saveBtn").onclick = function () {
+    try { localStorage.setItem(KEY, JSON.stringify(snapshot())); toast("Draft saved in this browser"); }
+    catch (e) { toast("Could not save draft"); }
+  };
+  $("newBtn").onclick = function () { if (confirm("Start a new quotation? Unsaved changes will be lost.")) fresh(); };
+  $("printBtn").onclick = function () {
+    var name = document.querySelector('[data-f="custName"]').value.trim();
+    var old = document.title;
+    document.title = "Spicera Quotation " + document.querySelector('[data-f="qno"]').value + (name ? " - " + name : "");
+    window.print();
+    document.title = old;
+  };
+  $("copyBtn").onclick = function () {
+    var t = totals(), f = snapshot().fields;
+    var lines = ["*Spicera — Quotation " + f.qno + "*", "Date: " + f.qdate + " · Valid until: " + f.qvalid];
+    if (f.custName) lines.push("For: " + f.custName);
+    lines.push("");
+    rows.forEach(function (r, i) {
+      lines.push((i + 1) + ". " + r.name + (r.size ? " (" + r.size + ")" : "") + " × " + r.qty + " @ ₹" + r.rate +
+        (num(r.disc) ? " less " + r.disc + "%" : "") + " = " + fmt(lineTaxable(r)));
+    });
+    lines.push("", "Taxable: " + fmt(t.taxable), "GST: " + fmt(t.tax));
+    if (t.ship) lines.push("Shipping: " + fmt(t.ship));
+    lines.push("*Total: " + fmt(t.grand) + "*", "", "Thank you for choosing Spicera!");
+    var text = lines.join("\n");
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .then(function () { toast("Copied — paste into WhatsApp / email"); })
+      .catch(function () { prompt("Copy this text:", text); });
+  };
+
+  /* ---------- Init ---------- */
+  fillStates($("supplyState"), "Kerala");
+  fillStates($("sellerState"), "Kerala");
+  fillPicker();
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  fresh();
+  if (saved) { restore(saved); toast("Loaded your saved draft"); }
+  grow();
+})();
+</script>
+</body>
+</html>
